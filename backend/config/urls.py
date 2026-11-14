@@ -32,4 +32,10 @@ urlpatterns = [
 
     # Module 7 Live Monitoring API
     path('api/monitoring/', include('live_monitoring.urls')),
+
+    # Module 8 Incident and Request Management API
+    path('api/incident-mgmt/', include('incident_management.urls')),
+
+    # Module 9 Panic and Escalation API
+    path('api/panic-escalation/', include('panic_escalation.urls')),
 ]

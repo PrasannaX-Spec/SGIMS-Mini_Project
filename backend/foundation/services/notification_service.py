@@ -319,3 +319,47 @@ def send_notification(
             )
 
     return created_ids
+
+
+def create_in_app_notification(
+    company_id,
+    user_id,
+    title: str,
+    message: str,
+    notification_type: str = 'INCIDENT_REPORTED',
+    data: dict = None,
+    **kwargs
+):
+    """
+    Convenience helper to create a direct in-app notification record and delivery row for a user.
+    """
+    try:
+        user = User.objects.filter(user_id=user_id).first()
+        if not user:
+            return None
+
+        notif = Notification.objects.create(
+            company_id=company_id,
+            user=user,
+            channel='in_app',
+            type_code=notification_type,
+            params=data or {},
+            subject=title,
+            message=message,
+            related_record_type=kwargs.get('related_record_type'),
+            related_record_id=kwargs.get('related_record_id'),
+            dedupe_key=kwargs.get('dedupe_key')
+        )
+
+        NotificationDelivery.objects.create(
+            notification=notif,
+            channel='IN',
+            status='SENT',
+            attempts=1,
+            last_attempt_at=timezone.now()
+        )
+        return notif.notification_id
+    except Exception as e:
+        logger.warning(f"Failed to create in-app notification: {e}")
+        return None
+

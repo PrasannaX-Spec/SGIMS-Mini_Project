@@ -57,7 +57,7 @@ class Client(models.Model):
 class ClientContact(models.Model):
     contact_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     client = models.ForeignKey(Client, on_delete=models.CASCADE, db_column='client_id', related_name='contacts')
-    contact_name = models.CharField(max_length=160)
+    contact_name = models.CharField(max_length=160, db_column='full_name')
     designation = models.CharField(max_length=100, null=True, blank=True)
     email = models.CharField(max_length=254, null=True, blank=True)
     phone = models.CharField(max_length=30)

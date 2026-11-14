@@ -35,7 +35,8 @@ END $$;
 -- 1.3 Extend client_contacts table (FR-2.14, FR-2.15, FR-2.16)
 ALTER TABLE security_erp.client_contacts 
     ADD COLUMN IF NOT EXISTS contact_role VARCHAR(30) DEFAULT 'general',
-    ADD COLUMN IF NOT EXISTS is_active BOOLEAN NOT NULL DEFAULT TRUE;
+    ADD COLUMN IF NOT EXISTS is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT now();
 
 DO $$
 BEGIN

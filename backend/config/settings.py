@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'deployment_roster',
     'attendance',
     'live_monitoring',
+    'incident_management',
+    'panic_escalation',
 ]
 
 MIDDLEWARE = [

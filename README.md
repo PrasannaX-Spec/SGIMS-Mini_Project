@@ -4,7 +4,7 @@ A modern, enterprise-grade multi-tenant operations ERP and monitoring platform b
 
 ---
 
-## Current Status: Modules 1–7 Completed (100% Tested)
+## Current Status: Modules 1–9 Completed (100% Tested)
 
 | Module | Title | Status | Tests | Core Capabilities |
 |---|---|---|---|---|
@@ -15,8 +15,10 @@ A modern, enterprise-grade multi-tenant operations ERP and monitoring platform b
 | **Module 5** | Deployment & Roster | Completed | 7/7 | Post Slots, Monthly & Weekly Shift Rosters, Rest Day / Overtime Compliance, Replacement Workflows |
 | **Module 6** | Attendance & Verification | Completed | 6/6 | Geofenced In-App Check-In/Out, GPS + Live Photo Evidence, Offline Sync, Anomaly Flags, Attendance Approvals & Period Closures |
 | **Module 7** | Live Monitoring | Completed | 8/8 | Duty-Time Location Tracking, SVG Radar Map, Decoupled Statuses, Debounced Geofence Alarms, Escalated Alerts, Supervisor Safety Pings, Breadcrumb Trail Replay |
+| **Module 8** | Incident & Request Management | Completed | 10/10 | Forensic Occurrence Intake, In-App Camera SHA-256 Hash Auditing, Immutable Addendums, Supervisor Dual-Signoff Escalation, Unified Inbox, Redacted Client Sharing, Guard Operational Requests, Named-Guard Complaint Shielding |
+| **Module 9** | Panic & Escalation | Completed | 14/14 | Instant Panic Triggering, Active-Alert Linking, Multi-Route Delivery (Push, Web, SMS), Escalation Stages 0–4, Supervisor Responder Actions, Emergency Services (112) Reference Auditing, False Alarm Verification Workflow, Mandatory Admin Review Closure, Welfare Follow-ups, Controlled Drills Exclusion, Device Readiness Monitoring, Immutable PostgreSQL Timeline Triggers, Sanitized Client-Safe Status, Module 8 Incident Bridge |
 
-**Total Regression Test Suite: 53 / 53 Passing (100%)**
+**Total Regression Test Suite: 70 / 70 Passing (100%)**
 
 ---
 
@@ -99,8 +101,10 @@ SGIMS_5/
 │   ├── deployment_roster/           # Module 5: Post Slots & Roster Planning
 │   ├── foundation/                  # Module 1: Auth, Audit, Users, Consents
 │   ├── guard_management/           # Module 3: Guard Profiles & Verification
+│   ├── incident_management/         # Module 8: Incidents, Guard Requests & Client Tickets
 │   ├── live_monitoring/            # Module 7: Live Telemetry, Radar Map & Alerts
 │   ├── master_data/                 # Module 2: Clients, Sites & Geofences
+│   ├── panic_escalation/            # Module 9: Emergency Panic Dispatch & Escalation Ladder
 │   ├── service_quotation/           # Module 4: Service Requests & Cost Sheets
 │   ├── init_db.py                   # Automated Database Setup & Seeder Script
 │   ├── manage.py
@@ -111,7 +115,7 @@ SGIMS_5/
 │   │   ├── api.js                   # Unified Axios API Client for all modules
 │   │   ├── App.jsx                  # Main Navigation & Tab Manager
 │   │   ├── components/              # Shared Sidebar, Navbar, Modals
-│   │   └── screens/                 # Operational Screen Consoles (Modules 1–7)
+│   │   └── screens/                 # Operational Screen Consoles (Modules 1–8)
 │   ├── package.json
 │   └── vite.config.js
 ├── security_agency_erp_schema_postgresql.sql # Base SQL Schema & Extensions
@@ -122,6 +126,8 @@ SGIMS_5/
 ├── module5_deployment_roster_schema.sql      # Module 5 Database Schema
 ├── module6_attendance_schema.sql             # Module 6 Database Schema
 ├── module7_live_monitoring_schema.sql        # Module 7 Database Schema
+├── module8_incident_request_schema.sql       # Module 8 Database Schema
+├── module9_panic_escalation_schema.sql       # Module 9 Database Schema
 ├── README.md                                 # High-level Documentation
 └── SETUP_GUIDE.md                            # Comprehensive Developer Setup Guide
 ```
@@ -130,13 +136,11 @@ SGIMS_5/
 
 ## Upcoming Modules Roadmap
 
-1. **Module 8:** Incidents & Occurrence Reporting
-2. **Module 9:** Patrol & Tour Verification
-3. **Module 10:** Client Portal & Visibility
-4. **Module 11:** Billing & Client Invoicing
-5. **Module 12:** Guard Mobile Application Shell
-6. **Module 13:** Operational Analytics & Reports
-7. **Module 14:** Payroll & Statutory Deductions (EPF, ESI, PT)
+1. **Module 10:** Client Portal & Visibility
+2. **Module 11:** Billing & Client Invoicing
+3. **Module 12:** Guard Mobile Application Shell
+4. **Module 13:** Operational Analytics & Reports
+5. **Module 14:** Payroll & Statutory Deductions (EPF, ESI, PT)
 
 ---
 

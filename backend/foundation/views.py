@@ -59,7 +59,7 @@ class SignInView(APIView):
     required_capability = 'foundation.legal.read'  # Accessible without prior login
 
     def post(self, request):
-        identifier = request.data.get('identifier')
+        identifier = request.data.get('identifier') or request.data.get('email')
         password = request.data.get('password')
         platform = request.data.get('platform', 'WEB').upper()
         device_id = request.data.get('device_id')

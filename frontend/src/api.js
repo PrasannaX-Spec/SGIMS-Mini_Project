@@ -103,6 +103,8 @@ export const masterApi = {
   resolveBillingRate: (params) => api.get('/master/billing-rates/resolve/', { params }),
 };
 
+export const masterDataApi = masterApi;
+
 export const guardApi = {
   getDashboard: () => api.get('/guards/dashboard/'),
   getGuards: (params) => api.get('/guards/', { params }),
@@ -202,6 +204,62 @@ export const monitoringApi = {
   getConfig: () => api.get('/monitoring/config/'),
   updateConfig: (data) => api.put('/monitoring/config/', data),
   getClientSafe: (params) => api.get('/monitoring/client-safe/', { params }),
+};
+
+export const incidentApi = {
+  getUnifiedInbox: (params) => api.get('/incident-mgmt/inbox/', { params }),
+  createIncident: (data) => api.post('/incident-mgmt/incidents/', data),
+  getIncidentDetail: (id) => api.get(`/incident-mgmt/incidents/${id}/`),
+  addAddendum: (id, data) => api.post(`/incident-mgmt/incidents/${id}/addendum/`, data),
+  acknowledgeIncident: (id) => api.post(`/incident-mgmt/incidents/${id}/acknowledge/`),
+  classifyIncident: (id, data) => api.patch(`/incident-mgmt/incidents/${id}/classify/`, data),
+  escalateIncident: (id, data) => api.post(`/incident-mgmt/incidents/${id}/escalate/`, data),
+  resolveIncident: (id, data) => api.post(`/incident-mgmt/incidents/${id}/resolve/`, data),
+  closeIncident: (id) => api.post(`/incident-mgmt/incidents/${id}/close/`),
+  reopenIncident: (id, data) => api.post(`/incident-mgmt/incidents/${id}/reopen/`, data),
+  rejectIncident: (id, data) => api.post(`/incident-mgmt/incidents/${id}/reject/`, data),
+  linkIncidents: (id, data) => api.post(`/incident-mgmt/incidents/${id}/link/`, data),
+  shareWithClient: (id, data) => api.post(`/incident-mgmt/incidents/${id}/client-share/`, data),
+  addTask: (id, data) => api.post(`/incident-mgmt/incidents/${id}/tasks/`, data),
+  getGuardRequests: (params) => api.get('/incident-mgmt/requests/', { params }),
+  createGuardRequest: (data) => api.post('/incident-mgmt/requests/', data),
+  actionGuardRequest: (id, data) => api.post(`/incident-mgmt/requests/${id}/action/`, data),
+  getClientTickets: (params) => api.get('/incident-mgmt/tickets/', { params }),
+  createClientTicket: (data) => api.post('/incident-mgmt/tickets/', data),
+  sendMessageClientTicket: (id, data) => api.post(`/incident-mgmt/tickets/${id}/message/`, data),
+  getCategories: () => api.get('/incident-mgmt/categories/'),
+  getRequestTypes: () => api.get('/incident-mgmt/request-types/'),
+  getOutcomes: () => api.get('/incident-mgmt/outcomes/'),
+  getAgingDashboard: () => api.get('/incident-mgmt/aging-dashboard/'),
+  exportCSV: () => api.get('/incident-mgmt/export/csv/', { responseType: 'blob' }),
+};
+
+export const panicApi = {
+  getActiveAlerts: () => api.get('/panic-escalation/alerts/active/'),
+  getAlerts: (params) => api.get('/panic-escalation/alerts/', { params }),
+  getAlertDetail: (id) => api.get(`/panic-escalation/alerts/${id}/`),
+  triggerPanic: (data) => api.post('/panic-escalation/alerts/trigger/', data),
+  acknowledgeAlert: (id, data) => api.post(`/panic-escalation/alerts/${id}/acknowledge/`, data),
+  recordAction: (id, data) => api.post(`/panic-escalation/alerts/${id}/action/`, data),
+  sendAreYouSafe: (id) => api.post(`/panic-escalation/alerts/${id}/are-you-safe/`),
+  respondAreYouSafe: (id, data) => api.post(`/panic-escalation/alerts/${id}/respond-safe/`, data),
+  reportFalseAlarm: (id, data) => api.post(`/panic-escalation/alerts/${id}/false-alarm/`, data),
+  confirmFalseAlarm: (id, data) => api.post(`/panic-escalation/alerts/${id}/confirm-false-alarm/`, data),
+  resolveAlert: (id, data) => api.post(`/panic-escalation/alerts/${id}/resolve/`, data),
+  adminReview: (id, data) => api.post(`/panic-escalation/alerts/${id}/admin-review/`, data),
+  addWelfareNote: (id, data) => api.post(`/panic-escalation/alerts/${id}/welfare-note/`, data),
+  getTimeline: (id) => api.get(`/panic-escalation/alerts/${id}/timeline/`),
+  linkIncident: (id, data) => api.post(`/panic-escalation/alerts/${id}/link-incident/`, data),
+  getConfig: () => api.get('/panic-escalation/config/'),
+  updateConfig: (data) => api.put('/panic-escalation/config/', data),
+  getDeliveryMonitoring: () => api.get('/panic-escalation/deliveries/monitoring/'),
+  getDeviceReadiness: (params) => api.get('/panic-escalation/device-readiness/', { params }),
+  updateReadiness: (data) => api.post('/panic-escalation/device-readiness/', data),
+  getDrills: () => api.get('/panic-escalation/drills/'),
+  createDrill: (data) => api.post('/panic-escalation/drills/', data),
+  getClientSafe: (siteId) => api.get('/panic-escalation/client-safe/', { params: { site_id: siteId } }),
+  getMetrics: () => api.get('/panic-escalation/metrics/'),
+  exportReport: (id, format = 'csv') => api.get(`/panic-escalation/alerts/${id}/export/`, { params: { format }, responseType: 'blob' }),
 };
 
 export default api;

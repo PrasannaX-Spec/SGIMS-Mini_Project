@@ -29,6 +29,8 @@ def initialize_database():
         ("Module 5: Deployment & Roster Schema", base_dir / "module5_deployment_roster_schema.sql"),
         ("Module 6: Attendance Schema", base_dir / "module6_attendance_schema.sql"),
         ("Module 7: Live Monitoring Schema", base_dir / "module7_live_monitoring_schema.sql"),
+        ("Module 8: Incident & Request Schema", base_dir / "module8_incident_request_schema.sql"),
+        ("Module 9: Panic & Escalation Schema", base_dir / "module9_panic_escalation_schema.sql"),
     ]
 
     print("==================================================")
@@ -57,6 +59,17 @@ def initialize_database():
     print("Seeding initial company, settings, and Admin user...")
     from django.core.management import call_command
     call_command('create_first_admin')
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute("SELECT seed_module8_company_defaults(company_id) FROM companies;")
+            print("Module 8 defaults seeded (Categories, Request Types, Resolution Outcomes).")
+        except Exception as seed_err:
+            print(f"[!] Module 8 seed notice: {seed_err}")
+        try:
+            cursor.execute("SELECT seed_module9_company_defaults(company_id) FROM companies;")
+            print("Module 9 defaults seeded (Escalation Configs).")
+        except Exception as seed_err:
+            print(f"[!] Module 9 seed notice: {seed_err}")
     print("==================================================")
     print("Database ready! Admin credentials:")
     print("  Email:    admin@securityagency.local")

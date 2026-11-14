@@ -40,6 +40,12 @@ import AttendanceDashboardScreen from './screens/AttendanceDashboardScreen';
 // Module 7 Live Monitoring Screen
 import LiveMonitoringScreen from './screens/LiveMonitoringScreen';
 
+// Module 8 Incident and Request Management Screen
+import IncidentManagementScreen from './screens/IncidentManagementScreen';
+
+// Module 9 Panic and Escalation Screen
+import PanicEscalationScreen from './screens/PanicEscalationScreen';
+
 export default function App() {
   const [user, setUser] = useState(null);
   const [authChecking, setAuthChecking] = useState(true);
@@ -240,6 +246,12 @@ export default function App() {
 
         {/* Dynamic Screen Content */}
         <main className="flex-1 p-6 md:p-8 overflow-y-auto">
+          {/* Module 9 Panic and Escalation */}
+          {activeTab === 'panic' && <PanicEscalationScreen currentUser={user} />}
+
+          {/* Module 8 Incident and Request Management */}
+          {activeTab === 'incidents' && <IncidentManagementScreen currentUser={user} />}
+
           {/* Module 7 Live Monitoring */}
           {activeTab === 'monitoring' && <LiveMonitoringScreen currentUser={user} />}
 
