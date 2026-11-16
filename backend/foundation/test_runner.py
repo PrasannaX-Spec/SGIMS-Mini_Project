@@ -22,6 +22,8 @@ class PostgreSQLSchemaTestRunner(DiscoverRunner):
         schema8_path = base_dir / "module7_live_monitoring_schema.sql"
         schema9_path = base_dir / "module8_incident_request_schema.sql"
         schema10_path = base_dir / "module9_panic_escalation_schema.sql"
+        schema11_path = base_dir / "module10_client_portal_schema.sql"
+        schema12_path = base_dir / "module11_billing_invoices_schema.sql"
 
         with connection.cursor() as cursor:
             cursor.execute("DROP SCHEMA IF EXISTS security_erp CASCADE;")
@@ -54,6 +56,12 @@ class PostgreSQLSchemaTestRunner(DiscoverRunner):
                     cursor.execute(f.read())
             if schema10_path.exists():
                 with open(schema10_path, "r", encoding="utf-8") as f:
+                    cursor.execute(f.read())
+            if schema11_path.exists():
+                with open(schema11_path, "r", encoding="utf-8") as f:
+                    cursor.execute(f.read())
+            if schema12_path.exists():
+                with open(schema12_path, "r", encoding="utf-8") as f:
                     cursor.execute(f.read())
 
         return config

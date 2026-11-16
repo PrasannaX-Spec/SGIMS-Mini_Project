@@ -1,8 +1,18 @@
 import React from 'react';
-import { Users, Smartphone, Bell, FileText, Settings, ShieldCheck, User, Building2, MapPin, DollarSign, UserCheck, FileCheck, Calendar, Clock, Activity, ShieldAlert, AlertOctagon } from 'lucide-react';
+import { Users, Smartphone, Bell, FileText, Settings, ShieldCheck, User, Building2, MapPin, DollarSign, UserCheck, FileCheck, Calendar, Clock, Activity, ShieldAlert, AlertOctagon, LayoutDashboard, Receipt } from 'lucide-react';
 
 export default function Sidebar({ user, activeTab, onNavigate }) {
   const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
+
+  const portalItems = (isAdmin || user?.role === 'CLIENT')
+    ? [
+        {
+          id: 'client-portal',
+          label: user?.role === 'CLIENT' ? 'Client Portal' : 'Client Portal & Preview',
+          icon: LayoutDashboard,
+        },
+      ]
+    : [];
 
   const incidentItems = (isAdmin || user?.role === 'SUPERVISOR' || user?.role === 'CLIENT' || user?.role === 'GUARD')
     ? [
@@ -19,7 +29,12 @@ export default function Sidebar({ user, activeTab, onNavigate }) {
       ]
     : [];
 
-  const commercialItems = (isAdmin || user?.role === 'CLIENT')
+  const commercialItems = isAdmin
+    ? [
+        { id: 'billing-invoices', label: 'Billing & Invoices', icon: Receipt },
+        { id: 'service-requests', label: 'Requests & Quotations', icon: FileCheck },
+      ]
+    : user?.role === 'CLIENT'
     ? [
         { id: 'service-requests', label: 'Requests & Quotations', icon: FileCheck },
       ]
@@ -64,6 +79,33 @@ export default function Sidebar({ user, activeTab, onNavigate }) {
   return (
     <aside className="w-64 bg-white border-r border-gray-200 min-h-[calc(100vh-4rem)] p-4 flex flex-col justify-between">
       <nav className="space-y-4">
+        {/* Module 10: Client Portal */}
+        {portalItems.length > 0 && (
+          <div className="space-y-1">
+            <div className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+              Client Experience
+            </div>
+            {portalItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => onNavigate(item.id)}
+                  className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-md text-sm font-medium transition text-left ${
+                    isActive
+                      ? 'bg-slate-900 text-white shadow-md'
+                      : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
+                >
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-400'}`} />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
         {/* Module 8: Incident & Request Management */}
         {incidentItems.length > 0 && (
           <div className="space-y-1">

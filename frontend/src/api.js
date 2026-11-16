@@ -262,5 +262,62 @@ export const panicApi = {
   exportReport: (id, format = 'csv') => api.get(`/panic-escalation/alerts/${id}/export/`, { params: { format }, responseType: 'blob' }),
 };
 
+export const clientPortalApi = {
+  getDashboard: () => api.get('/portal/dashboard/'),
+  getSites: () => api.get('/portal/sites/'),
+  getDeployment: (siteId) => api.get('/portal/deployment/', { params: { site_id: siteId } }),
+  getGuardSafeCard: (guardId) => api.get(`/portal/guards/${guardId}/safe-card/`),
+  reportPostIssue: (data) => api.post('/portal/report-post-issue/', data),
+  getTodayAttendance: (siteId) => api.get('/portal/attendance/today/', { params: { site_id: siteId } }),
+  getApprovedAttendance: (siteId, startDate, endDate) => api.get('/portal/attendance/approved/', { params: { site_id: siteId, start_date: startDate, end_date: endDate } }),
+  downloadMonthlyAttendance: (siteId, month, year) => api.get('/portal/attendance/monthly-download/', { params: { site_id: siteId, month, year }, responseType: 'blob' }),
+  raiseAttendanceQuery: (data) => api.post('/portal/attendance/query/', data),
+  getIncidents: (siteId, status) => api.get('/portal/incidents/', { params: { site_id: siteId, status } }),
+  commentIncident: (versionId, data) => api.post(`/portal/incidents/${versionId}/comment/`, data),
+  getPanicStatus: (panicId) => api.get('/portal/panic/status/', { params: { panic_alert_id: panicId } }),
+  acknowledgePanic: (panicId) => api.post(`/portal/panic/${panicId}/acknowledge/`),
+  getDocuments: () => api.get('/portal/documents/'),
+  getInvoices: () => api.get('/portal/invoices/'),
+  getTickets: () => api.get('/portal/tickets/'),
+  getTicketDetail: (ticketId) => api.get(`/portal/tickets/${ticketId}/`),
+  createTicket: (data) => api.post('/portal/tickets/', data),
+  replyTicket: (ticketId, data) => api.post(`/portal/tickets/${ticketId}/`, data),
+  getAgencyContact: () => api.get('/portal/agency-contact/'),
+  getPreferences: () => api.get('/portal/preferences/'),
+  updatePreferences: (data) => api.put('/portal/preferences/', data),
+  // Admin endpoints
+  getAdminUsers: () => api.get('/portal/admin/users/'),
+  getAdminUserSiteAccess: (userId) => api.get(`/portal/admin/users/${userId}/site-access/`),
+  updateAdminUserSiteAccess: (userId, data) => api.post(`/portal/admin/users/${userId}/site-access/`, data),
+  getAdminPortalConfig: (clientId) => api.get('/portal/admin/configuration/', { params: { client_id: clientId } }),
+  updateAdminPortalConfig: (data) => api.put('/portal/admin/configuration/', data),
+  getAdminPreview: (clientUserId) => api.get('/portal/admin/preview/', { params: { client_user_id: clientUserId } }),
+  getAdminUsage: (days) => api.get('/portal/admin/usage/', { params: { days } }),
+  getAdminAnnouncements: () => api.get('/portal/admin/announcements/'),
+  createAdminAnnouncement: (data) => api.post('/portal/admin/announcements/', data),
+};
+
+export const billingApi = {
+  getDashboardMetrics: () => api.get('/billing/dashboard/'),
+  getCompanySettings: () => api.get('/billing/settings/company/'),
+  updateCompanySettings: (data) => api.put('/billing/settings/company/', data),
+  getClientSettings: (clientId) => api.get('/billing/settings/client/', { params: clientId ? { client_id: clientId } : {} }),
+  createClientSettings: (data) => api.post('/billing/settings/client/', data),
+  updateClientSettings: (id, data) => api.put(`/billing/settings/client/${id}/`, data),
+  previewBilling: (data) => api.post('/billing/run/preview/', data),
+  runBilling: (data) => api.post('/billing/run/execute/', data),
+  getInvoices: (params) => api.get('/billing/invoices/', { params }),
+  getInvoiceDetail: (id) => api.get(`/billing/invoices/${id}/`),
+  addManualLine: (id, data) => api.post(`/billing/invoices/${id}/lines/manual/`, data),
+  issueInvoice: (id) => api.post(`/billing/invoices/${id}/issue/`),
+  cancelInvoice: (id, data) => api.post(`/billing/invoices/${id}/cancel/`, data),
+  createReplacement: (id) => api.post(`/billing/invoices/${id}/replace/`),
+  recordPayment: (id, data) => api.post(`/billing/invoices/${id}/payments/`, data),
+  reversePayment: (paymentId, data) => api.post(`/billing/payments/${paymentId}/reverse/`, data),
+  getReceivablesAgeing: () => api.get('/billing/receivables/ageing/'),
+  getInvoiceAnnexure: (id) => api.get(`/billing/invoices/${id}/annexure/`),
+  raiseInvoiceQuery: (id, data) => api.post(`/billing/invoices/${id}/queries/raise/`, data),
+};
+
 export default api;
 

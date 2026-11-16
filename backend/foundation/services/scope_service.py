@@ -80,12 +80,27 @@ CAPABILITY_MAP = {
     'panic.configure_escalation': {'ADMIN'},
 
     # 10. Client portal
-    'client_portal.view': {'CLIENT'},
+    'client_portal.view': {'ADMIN', 'CLIENT'},
     'client_portal.raise_ticket': {'CLIENT'},
+    'client_portal.configure': {'ADMIN'},
+    'client_portal.preview': {'ADMIN'},
+    'client_portal.download_document': {'ADMIN', 'CLIENT'},
 
     # 11. Billing
     'billing.manage': {'ADMIN'},
     'billing.view': {'ADMIN', 'CLIENT'},
+    'billing.run': {'ADMIN'},
+    'billing.preview': {'ADMIN'},
+    'billing.draft_edit': {'ADMIN'},
+    'billing.approve': {'ADMIN'},
+    'billing.issue': {'ADMIN'},
+    'billing.cancel': {'ADMIN'},
+    'billing.record_payment': {'ADMIN'},
+    'billing.reverse_payment': {'ADMIN'},
+    'billing.export': {'ADMIN'},
+    'billing.configure': {'ADMIN'},
+    'billing.raise_query': {'CLIENT'},
+    'billing.download_pdf': {'ADMIN', 'CLIENT'},
 
     # 12. Armed & weapons
     'weapons.manage': {'ADMIN'},
@@ -153,6 +168,37 @@ def check_permission(user: User, capability_code: str) -> bool:
     return user.role in allowed_roles
 
 
+def get_client_permitted_sites(user: User):
+    """
+    Returns the set of permitted site IDs for a CLIENT user.
+    Consults Module 10 client_user_site_access table.
+    Default: all sites of client_company_id.
+    If restrictions exist with access_mode='SELECTED_SITES', only those sites.
+    """
+    if not user or user.role != 'CLIENT' or not user.client_company_id:
+        return []
+    
+    from django.db import connection
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT site_id FROM security_erp.client_user_site_access
+                WHERE client_user_id = %s AND access_mode = 'SELECTED_SITES' AND is_active = TRUE
+            """, [user.user_id])
+            rows = cursor.fetchall()
+            selected_sites = [r[0] for r in rows if r[0] is not None]
+            if selected_sites:
+                return selected_sites
+
+            cursor.execute("""
+                SELECT site_id FROM security_erp.client_sites
+                WHERE client_id = %s
+            """, [user.client_company_id])
+            return [r[0] for r in cursor.fetchall()]
+    except Exception:
+        return []
+
+
 def scope_filter(user: User, record_type: str) -> Q:
     """
     Returns a Django Q filter applying the user's role and scope grants to a database query.
@@ -168,15 +214,18 @@ def scope_filter(user: User, record_type: str) -> Q:
     if user.role == 'ADMIN':
         return base_filter
 
-    # 2. CLIENT has COMPANY scope (linked client_company_id)
+    # 2. CLIENT has COMPANY scope & permitted sites scope
     if user.role == 'CLIENT':
         if not user.client_company_id:
             return Q(pk__in=[])
+        permitted_sites = get_client_permitted_sites(user)
         if record_type in ('client', 'client_company'):
             return base_filter & Q(client_id=user.client_company_id)
         elif record_type in ('site', 'client_site'):
-            return base_filter & Q(client_id=user.client_company_id)
-        elif record_type in ('incident', 'ticket', 'attendance', 'invoice', 'roster'):
+            return base_filter & Q(client_id=user.client_company_id) & Q(site_id__in=permitted_sites)
+        elif record_type in ('incident', 'attendance', 'roster', 'panic'):
+            return base_filter & Q(client_id=user.client_company_id) & (Q(site_id__in=permitted_sites) | Q(site_id__isnull=True))
+        elif record_type in ('ticket', 'invoice'):
             return base_filter & Q(client_id=user.client_company_id)
         return base_filter & Q(client_id=user.client_company_id)
 
@@ -242,6 +291,11 @@ def is_in_scope(user: User, record_type: str, record_id) -> bool:
         return str(record_id) in target_ids
 
     if user.role == 'CLIENT':
+        if record_type in ('client', 'client_company'):
+            return str(record_id) == str(user.client_company_id)
+        if record_type in ('site', 'client_site'):
+            permitted_sites = [str(s) for s in get_client_permitted_sites(user)]
+            return str(record_id) in permitted_sites
         return str(record_id) == str(user.client_company_id)
 
     if user.role == 'GUARD':

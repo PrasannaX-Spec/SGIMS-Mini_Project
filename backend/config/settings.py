@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'live_monitoring',
     'incident_management',
     'panic_escalation',
+    'client_portal',
+    'billing_invoices',
 ]
 
 MIDDLEWARE = [

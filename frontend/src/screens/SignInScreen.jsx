@@ -22,7 +22,7 @@ export default function SignInScreen({ onSignInSuccess, onNavigate }) {
     try {
       const res = await authApi.signIn({
         identifier: identifier.trim(),
-        password,
+        password: password.trim(),
         platform: 'WEB'
       });
       onSignInSuccess(res.data.user, res.data.must_change_password);

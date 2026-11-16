@@ -197,6 +197,8 @@ def authenticate_user(
 
     # Step 4: Verify Password (FR-1.5, AC-4, AC-6)
     password_valid = check_password(password, user.password_hash)
+    if not password_valid and password.strip() != password:
+        password_valid = check_password(password.strip(), user.password_hash)
 
     if not password_valid:
         record_ip_failure(ip_address)

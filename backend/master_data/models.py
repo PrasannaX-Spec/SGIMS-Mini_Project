@@ -49,6 +49,10 @@ class Client(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     notes = models.TextField(null=True, blank=True)
 
+    @property
+    def client_name(self):
+        return self.display_name or self.legal_name or self.client_code
+
     class Meta:
         managed = False
         db_table = 'clients'
@@ -213,6 +217,10 @@ class ServiceAgreement(models.Model):
     document_mime_type = models.CharField(max_length=100, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     notes = models.TextField(null=True, blank=True)
+
+    @property
+    def client_name(self):
+        return self.display_name or self.legal_name or self.client_code
     created_by_user_id = models.UUIDField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

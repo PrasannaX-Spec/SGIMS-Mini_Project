@@ -15,7 +15,7 @@ from pathlib import Path
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
-from django.db import connection
+from django.db import connection, transaction
 
 def initialize_database():
     base_dir = Path(__file__).resolve().parent.parent
@@ -31,6 +31,8 @@ def initialize_database():
         ("Module 7: Live Monitoring Schema", base_dir / "module7_live_monitoring_schema.sql"),
         ("Module 8: Incident & Request Schema", base_dir / "module8_incident_request_schema.sql"),
         ("Module 9: Panic & Escalation Schema", base_dir / "module9_panic_escalation_schema.sql"),
+        ("Module 10: Client Portal Schema", base_dir / "module10_client_portal_schema.sql"),
+        ("Module 11: Billing & Invoices Schema", base_dir / "module11_billing_invoices_schema.sql"),
     ]
 
     print("==================================================")
@@ -42,6 +44,11 @@ def initialize_database():
     print("--------------------------------------------------")
 
     with connection.cursor() as cursor:
+        if '--reset' in sys.argv:
+            print("Resetting schema 'security_erp' (CASCADE)...", end="", flush=True)
+            cursor.execute("DROP SCHEMA IF EXISTS security_erp CASCADE; CREATE SCHEMA security_erp;")
+            print(" [OK]")
+
         for name, file_path in schemas:
             if not file_path.exists():
                 print(f"[!] Warning: File not found: {file_path.name}")
@@ -50,8 +57,15 @@ def initialize_database():
             print(f"Applying: {name} ({file_path.name})...", end="", flush=True)
             with open(file_path, "r", encoding="utf-8") as f:
                 sql_content = f.read()
-                cursor.execute(sql_content)
-            print(" [OK]")
+                try:
+                    with transaction.atomic():
+                        cursor.execute(sql_content)
+                    print(" [OK]")
+                except Exception as ex:
+                    if "already exists" in str(ex):
+                        print(" [Exists - OK]")
+                    else:
+                        raise ex
 
     print("==================================================")
     print("All ERP database schemas applied successfully!")
@@ -70,6 +84,11 @@ def initialize_database():
             print("Module 9 defaults seeded (Escalation Configs).")
         except Exception as seed_err:
             print(f"[!] Module 9 seed notice: {seed_err}")
+        try:
+            cursor.execute("SELECT seed_module10_company_defaults(company_id) FROM companies;")
+            print("Module 10 defaults seeded (Client Portal Configs).")
+        except Exception as seed_err:
+            print(f"[!] Module 10 seed notice: {seed_err}")
     print("==================================================")
     print("Database ready! Admin credentials:")
     print("  Email:    admin@securityagency.local")

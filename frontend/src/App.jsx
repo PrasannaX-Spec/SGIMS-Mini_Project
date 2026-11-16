@@ -46,6 +46,12 @@ import IncidentManagementScreen from './screens/IncidentManagementScreen';
 // Module 9 Panic and Escalation Screen
 import PanicEscalationScreen from './screens/PanicEscalationScreen';
 
+// Module 10 Client Portal Screen
+import ClientPortalScreen from './screens/ClientPortalScreen';
+
+// Module 11 Billing and Invoices Screen
+import BillingInvoicesScreen from './screens/BillingInvoicesScreen';
+
 export default function App() {
   const [user, setUser] = useState(null);
   const [authChecking, setAuthChecking] = useState(true);
@@ -79,7 +85,7 @@ export default function App() {
         if (userData.must_change_password) {
           setAuthView('force_password');
         } else {
-          setActiveTab(userData.role === 'ADMIN' ? 'users' : 'profile');
+          setActiveTab(userData.role === 'ADMIN' ? 'users' : userData.role === 'CLIENT' ? 'client-portal' : 'profile');
           checkConsent();
         }
       } catch (err) {
@@ -111,7 +117,7 @@ export default function App() {
       setAuthView('force_password');
     } else {
       setAuthView('signin');
-      setActiveTab(userData.role === 'ADMIN' ? 'users' : 'profile');
+      setActiveTab(userData.role === 'ADMIN' ? 'users' : userData.role === 'CLIENT' ? 'client-portal' : 'profile');
       checkConsent();
     }
   };
@@ -154,7 +160,7 @@ export default function App() {
 
   const handleNavigate = (tab) => {
     if (tab === 'dashboard') {
-      setActiveTab(user?.role === 'ADMIN' ? 'users' : 'profile');
+      setActiveTab(user?.role === 'ADMIN' ? 'users' : user?.role === 'CLIENT' ? 'client-portal' : 'profile');
       setSelectedUserId(null);
     } else if (tab === 'users') {
       setActiveTab('users');
@@ -209,7 +215,7 @@ export default function App() {
         onSuccess={() => {
           setUser({ ...user, must_change_password: false });
           setAuthView('signin');
-          setActiveTab(user.role === 'ADMIN' ? 'users' : 'profile');
+          setActiveTab(user.role === 'ADMIN' ? 'users' : user.role === 'CLIENT' ? 'client-portal' : 'profile');
           checkConsent();
         }}
       />
@@ -246,6 +252,12 @@ export default function App() {
 
         {/* Dynamic Screen Content */}
         <main className="flex-1 p-6 md:p-8 overflow-y-auto">
+          {/* Module 11 Billing & Invoices */}
+          {activeTab === 'billing-invoices' && <BillingInvoicesScreen currentUser={user} />}
+
+          {/* Module 10 Client Portal */}
+          {activeTab === 'client-portal' && <ClientPortalScreen user={user} />}
+
           {/* Module 9 Panic and Escalation */}
           {activeTab === 'panic' && <PanicEscalationScreen currentUser={user} />}
 

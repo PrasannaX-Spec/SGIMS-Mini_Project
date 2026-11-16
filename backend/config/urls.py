@@ -3,9 +3,21 @@ URL configuration for Security Agency ERP.
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import JsonResponse
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
+def api_root(request):
+    return JsonResponse({
+        "status": "online",
+        "service": "Security Agency Management and Monitoring System (SGIMS) API",
+        "version": "1.0",
+        "frontend_url": "http://127.0.0.1:5173",
+        "api_documentation": "/api/docs/",
+        "message": "Backend API is running. Access the web console at http://127.0.0.1:5173 or interactive Swagger docs at /api/docs/."
+    })
+
 urlpatterns = [
+    path('', api_root, name='api-root'),
     path('admin/', admin.site.urls),
 
     # OpenAPI schema & Swagger UI
@@ -38,4 +50,10 @@ urlpatterns = [
 
     # Module 9 Panic and Escalation API
     path('api/panic-escalation/', include('panic_escalation.urls')),
+
+    # Module 10 Client Portal API
+    path('api/portal/', include('client_portal.urls')),
+
+    # Module 11 Billing & Invoices API
+    path('api/billing/', include('billing_invoices.urls')),
 ]
