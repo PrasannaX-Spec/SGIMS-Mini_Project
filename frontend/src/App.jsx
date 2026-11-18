@@ -52,6 +52,9 @@ import ClientPortalScreen from './screens/ClientPortalScreen';
 // Module 11 Billing and Invoices Screen
 import BillingInvoicesScreen from './screens/BillingInvoicesScreen';
 
+// Module 12 Armed Guard and Weapons Register Screen
+import WeaponsRegisterScreen from './screens/WeaponsRegisterScreen';
+
 export default function App() {
   const [user, setUser] = useState(null);
   const [authChecking, setAuthChecking] = useState(true);
@@ -252,6 +255,9 @@ export default function App() {
 
         {/* Dynamic Screen Content */}
         <main className="flex-1 p-6 md:p-8 overflow-y-auto">
+          {/* Module 12 Armed Guard & Weapons Register */}
+          {activeTab === 'weapons' && <WeaponsRegisterScreen currentUser={user} />}
+
           {/* Module 11 Billing & Invoices */}
           {activeTab === 'billing-invoices' && <BillingInvoicesScreen currentUser={user} />}
 

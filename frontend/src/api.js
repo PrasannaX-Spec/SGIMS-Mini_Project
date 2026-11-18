@@ -319,5 +319,37 @@ export const billingApi = {
   raiseInvoiceQuery: (id, data) => api.post(`/billing/invoices/${id}/queries/raise/`, data),
 };
 
+export const weaponsApi = {
+  getDashboard: () => api.get('/weapons/dashboard/'),
+  getWeapons: (params) => api.get('/weapons/records/', { params }),
+  getWeapon: (id) => api.get(`/weapons/records/${id}/`),
+  createWeapon: (data) => api.post('/weapons/records/', data),
+  updateWeapon: (id, data) => api.patch(`/weapons/records/${id}/`, data),
+  revealSerial: (id, reason) => api.post(`/weapons/records/${id}/reveal-serial/`, { reason }),
+  relabelQR: (id) => api.post(`/weapons/records/${id}/relabel-qr/`),
+  getLicences: () => api.get('/weapons/licences/'),
+  createLicence: (data) => api.post('/weapons/licences/', data),
+  issueWeapon: (data) => api.post('/weapons/transfers/issue/', data),
+  confirmIssue: (transferId, data) => api.post(`/weapons/transfers/${transferId}/confirm-issue/`, data),
+  returnWeapon: (data) => api.post('/weapons/transfers/return/', data),
+  handoverWeapon: (data) => api.post('/weapons/transfers/handover/', data),
+  getAmmunitionLots: () => api.get('/weapons/ammo/lots/'),
+  createAmmunitionLot: (data) => api.post('/weapons/ammo/lots/', data),
+  getAmmunitionLedger: () => api.get('/weapons/ammo/ledger/'),
+  submitStockCount: (data) => api.post('/weapons/ammo/stock-count/', data),
+  approveStockCount: (countId, approve) => api.post(`/weapons/ammo/stock-count/${countId}/approve/`, { approve }),
+  getDiscrepancies: () => api.get('/weapons/discrepancies/'),
+  resolveDiscrepancy: (id, data) => api.patch(`/weapons/discrepancies/${id}/`, data),
+  getGuardBlocks: () => api.get('/weapons/guard-blocks/'),
+  createGuardBlock: (data) => api.post('/weapons/guard-blocks/', data),
+  getRecoveries: () => api.get('/weapons/recoveries/'),
+  getDailyCustody: (params) => api.get('/weapons/daily-custody/', { params }),
+  getMaintenanceLogs: () => api.get('/weapons/maintenance/'),
+  createMaintenanceLog: (data) => api.post('/weapons/maintenance/', data),
+  reportMissing: (data) => api.post('/weapons/missing-report/', data),
+  exportRegister: (type = 'weapons') => api.get(`/weapons/export/register/?type=${type}`, { responseType: 'blob' }),
+  getModule13Reporting: () => api.get('/weapons/reporting/module13/'),
+};
+
 export default api;
 

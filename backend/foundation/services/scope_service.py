@@ -106,6 +106,9 @@ CAPABILITY_MAP = {
     'weapons.manage': {'ADMIN'},
     'weapons.issue_return': {'ADMIN', 'SUPERVISOR'},
     'weapons.view_own': {'GUARD'},
+    'weapons.view': {'ADMIN', 'SUPERVISOR'},
+    'weapons.transfers': {'ADMIN', 'SUPERVISOR', 'GUARD'},
+    'weapons.report': {'ADMIN', 'SUPERVISOR', 'GUARD'},
 
     # 13. Reports & dashboards
     'reports.view': {'ADMIN', 'SUPERVISOR', 'CLIENT'},

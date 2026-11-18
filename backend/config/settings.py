@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'panic_escalation',
     'client_portal',
     'billing_invoices',
+    'weapons_register',
 ]
 
 MIDDLEWARE = [

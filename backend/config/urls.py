@@ -56,4 +56,7 @@ urlpatterns = [
 
     # Module 11 Billing & Invoices API
     path('api/billing/', include('billing_invoices.urls')),
+
+    # Module 12 Armed Guard and Weapons Register API
+    path('api/weapons/', include('weapons_register.urls')),
 ]
