@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'client_portal',
     'billing_invoices',
     'weapons_register',
+    'reports_dashboards',
 ]
 
 MIDDLEWARE = [
@@ -131,7 +132,7 @@ SPECTACULAR_SETTINGS = {
 # CORS
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS',
-    default='http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000',
+    default='http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174,http://localhost:3000',
     cast=Csv()
 )
 CORS_ALLOW_CREDENTIALS = True

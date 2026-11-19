@@ -27,6 +27,11 @@ class SessionAndJWTAuthentication(authentication.BaseAuthentication):
     (FR-1.16, FR-1.17, FR-1.21)
     """
     def authenticate(self, request):
+        path = getattr(request, 'path', '')
+        # Allow public auth endpoints to process unauthenticated requests without session errors
+        if path.startswith('/api/auth/sign-in') or path.startswith('/api/auth/forgot-password') or path.startswith('/api/auth/reset-password'):
+            return None
+
         auth_header = request.headers.get('Authorization')
         session_token = request.COOKIES.get('sec_session') or request.headers.get('X-Session-Token')
 

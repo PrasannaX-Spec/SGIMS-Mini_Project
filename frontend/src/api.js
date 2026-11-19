@@ -351,5 +351,28 @@ export const weaponsApi = {
   getModule13Reporting: () => api.get('/weapons/reporting/module13/'),
 };
 
+export const reportsApi = {
+  getAdminDashboard: (params) => api.get('/reports/dashboard/admin/', { params }),
+  getSupervisorDashboard: (params) => api.get('/reports/dashboard/supervisor/', { params }),
+  getDataHealth: () => api.get('/reports/data-health/'),
+  getMetrics: (params) => api.get('/reports/metrics/', { params }),
+  getMetricVersions: (metricId) => api.get(`/reports/metrics/${metricId}/versions/`),
+  proposeMetricVersion: (metricId, data) => api.post(`/reports/metrics/${metricId}/propose-version/`, data),
+  getCatalogue: (params) => api.get('/reports/catalogue/', { params }),
+  getReportDetail: (code, params) => api.get(`/reports/detail/${code}/`, { params }),
+  exportCsv: (data) => api.post('/reports/export/csv/', data, { responseType: 'blob' }),
+  exportPdf: (data) => api.post('/reports/export/pdf/', data),
+  getPresets: () => api.get('/reports/presets/'),
+  createPreset: (data) => api.post('/reports/presets/', data),
+  deletePreset: (id) => api.delete(`/reports/presets/${id}/`),
+  getClientSummaries: (params) => api.get('/reports/client-summaries/', { params }),
+  generateClientSummary: (data) => api.post('/reports/client-summaries/', data),
+  releaseClientSummary: (id) => api.post(`/reports/client-summaries/${id}/release/`),
+  getClientSafeSummaries: (params) => api.get('/reports/client-summaries/client-safe/', { params }),
+  getReconciliation: () => api.get('/reports/reconciliation/'),
+  triggerRepair: () => api.post('/reports/reconciliation/'),
+  getExportHistory: () => api.get('/reports/export-history/'),
+};
+
 export default api;
 

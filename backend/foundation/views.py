@@ -56,6 +56,7 @@ class SignInView(APIView):
     Sign-in endpoint for web and mobile (FR-1.1 to FR-1.28, AC-1, AC-2, AC-3, AC-4, AC-15).
     """
     permission_classes = [AllowAny]
+    authentication_classes = []
     required_capability = 'foundation.legal.read'  # Accessible without prior login
 
     def post(self, request):
@@ -198,6 +199,7 @@ class ForgotPasswordView(APIView):
     Always returns identical confirmation text.
     """
     permission_classes = [AllowAny]
+    authentication_classes = []
     required_capability = 'foundation.legal.read'
 
     def post(self, request):
@@ -246,6 +248,7 @@ class ResetPasswordView(APIView):
     Set password from reset link or invite link (FR-1.8, FR-1.9, FR-1.44, AC-13, AC-14, AC-60).
     """
     permission_classes = [AllowAny]
+    authentication_classes = []
     required_capability = 'foundation.legal.read'
 
     def post(self, request):
