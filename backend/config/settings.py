@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'billing_invoices',
     'weapons_register',
     'reports_dashboards',
+    'payroll',
 ]
 
 MIDDLEWARE = [

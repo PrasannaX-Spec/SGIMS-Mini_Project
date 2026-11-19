@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Smartphone, Bell, FileText, Settings, ShieldCheck, User, Building2, MapPin, DollarSign, UserCheck, FileCheck, Calendar, Clock, Activity, ShieldAlert, AlertOctagon, LayoutDashboard, Receipt, Crosshair, BarChart3 } from 'lucide-react';
+import { Users, Smartphone, Bell, FileText, Settings, ShieldCheck, User, Building2, MapPin, DollarSign, UserCheck, FileCheck, Calendar, Clock, Activity, ShieldAlert, AlertOctagon, LayoutDashboard, Receipt, Crosshair, BarChart3, Banknote } from 'lucide-react';
 
 export default function Sidebar({ user, activeTab, onNavigate }) {
   const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
@@ -7,6 +7,12 @@ export default function Sidebar({ user, activeTab, onNavigate }) {
   const reportingItems = (isAdmin || user?.role === 'SUPERVISOR')
     ? [
         { id: 'reports', label: 'Reports & Dashboards', icon: BarChart3 },
+      ]
+    : [];
+
+  const payrollItems = (isAdmin || user?.role === 'GUARD')
+    ? [
+        { id: 'payroll', label: isAdmin ? 'Payroll & Compensation' : 'My Payslips & Advances', icon: Banknote },
       ]
     : [];
 
@@ -125,6 +131,33 @@ export default function Sidebar({ user, activeTab, onNavigate }) {
               Analytics & Reporting
             </div>
             {reportingItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => onNavigate(item.id)}
+                  className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-md text-sm font-medium transition text-left ${
+                    isActive
+                      ? 'bg-slate-900 text-white shadow-sm'
+                      : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
+                >
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-400'}`} />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Module 14: Payroll & Compensation */}
+        {payrollItems.length > 0 && (
+          <div className="space-y-1">
+            <div className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+              Compensation & Payroll
+            </div>
+            {payrollItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
               return (

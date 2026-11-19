@@ -35,6 +35,7 @@ def initialize_database():
         ("Module 11: Billing & Invoices Schema", base_dir / "module11_billing_invoices_schema.sql"),
         ("Module 12: Armed Guard & Weapons Register Schema", base_dir / "module12_weapons_register_schema.sql"),
         ("Module 13: Reports & Dashboards Schema", base_dir / "module13_reports_dashboards_schema.sql"),
+        ("Module 14: Payroll Schema", base_dir / "module14_payroll_schema.sql"),
     ]
 
     print("==================================================")
@@ -101,6 +102,11 @@ def initialize_database():
             print("Module 13 defaults seeded (Reports, 81 Metrics & Dictionary Versions).")
         except Exception as seed_err:
             print(f"[!] Module 13 seed notice: {seed_err}")
+        try:
+            cursor.execute("SELECT seed_module14_company_defaults(company_id) FROM companies;")
+            print("Module 14 defaults seeded (Payroll Starter Components & Paid-Day Rule Set).")
+        except Exception as seed_err:
+            print(f"[!] Module 14 seed notice: {seed_err}")
     print("==================================================")
     print("Database ready! Admin credentials:")
     print("  Email:    admin@securityagency.local")

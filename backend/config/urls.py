@@ -62,4 +62,7 @@ urlpatterns = [
 
     # Module 13 Reports and Dashboards API
     path('api/reports/', include('reports_dashboards.urls')),
+
+    # Module 14 Payroll & Compensation API
+    path('api/payroll/', include('payroll.urls')),
 ]

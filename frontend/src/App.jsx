@@ -58,6 +58,9 @@ import WeaponsRegisterScreen from './screens/WeaponsRegisterScreen';
 // Module 13 Reports and Dashboards Screen
 import ReportsDashboardsScreen from './screens/ReportsDashboardsScreen';
 
+// Module 14 Payroll and Compensation Screen
+import PayrollScreen from './screens/PayrollScreen';
+
 export default function App() {
   const [user, setUser] = useState(null);
   const [authChecking, setAuthChecking] = useState(true);
@@ -258,6 +261,9 @@ export default function App() {
 
         {/* Dynamic Screen Content */}
         <main className="flex-1 p-6 md:p-8 overflow-y-auto">
+          {/* Module 14 Payroll & Compensation */}
+          {activeTab === 'payroll' && <PayrollScreen currentUser={user} />}
+
           {/* Module 13 Reports & Dashboards */}
           {activeTab === 'reports' && <ReportsDashboardsScreen currentUser={user} />}
 
